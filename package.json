@@ -1,0 +1,7 @@
+{
+  "name": "first-todo",
+  "version": "1.0.0",
+  "dependencies": {
+    "frappe-gantt": "0.6.1"
+  }
+}

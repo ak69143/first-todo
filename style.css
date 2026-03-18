@@ -9,8 +9,10 @@ body {
   background: #f0f2f5;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 40px 16px;
+  gap: 24px;
 }
 
 .container {
@@ -19,7 +21,7 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 32px;
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   height: fit-content;
 }
 
@@ -33,13 +35,18 @@ h1 {
 }
 
 #todo-form {
+  margin-bottom: 16px;
+}
+
+.form-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 #todo-input {
   flex: 1;
+  min-width: 160px;
   padding: 10px 14px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -49,6 +56,20 @@ h1 {
 }
 
 #todo-input:focus {
+  border-color: #6c63ff;
+}
+
+#due-date-input {
+  padding: 10px 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  color: #555;
+}
+
+#due-date-input:focus {
   border-color: #6c63ff;
 }
 
@@ -102,7 +123,6 @@ h1 {
   gap: 12px;
   padding: 12px 8px;
   border-bottom: 1px solid #f0f0f0;
-  transition: opacity 0.2s;
 }
 
 #todo-list li:last-child {
@@ -122,11 +142,27 @@ h1 {
   flex-shrink: 0;
 }
 
-.todo-text {
+.todo-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  word-break: break-word;
+}
+
+.todo-text {
   font-size: 0.95rem;
   color: #333;
-  word-break: break-word;
+}
+
+.due-date {
+  font-size: 0.78rem;
+  color: #999;
+}
+
+.due-date.overdue {
+  color: #e74c3c;
+  font-weight: 600;
 }
 
 .delete-btn {
@@ -169,4 +205,182 @@ h1 {
 
 #clear-completed:hover {
   color: #e74c3c;
+}
+
+/* ガントチャートセクション */
+.gantt-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+.gantt-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 24px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.gantt-header:hover {
+  background: #f8f8ff;
+}
+
+.gantt-controls {
+  display: flex;
+  gap: 8px;
+  padding: 0 24px 12px;
+}
+
+.gantt-chevron {
+  font-size: 1.3rem;
+  color: #aaa;
+  transition: transform 0.35s ease;
+  line-height: 1;
+}
+
+.gantt-section.collapsed .gantt-chevron {
+  transform: rotate(180deg);
+}
+
+/* スクリーンが降りるアニメーション */
+.gantt-body {
+  max-height: 600px;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.gantt-section.collapsed .gantt-body {
+  max-height: 0;
+}
+
+#gantt-container {
+  padding: 0 24px 24px;
+  overflow-x: auto;
+}
+
+/* カスタムガントチャート */
+.g-chart {
+  min-width: 100%;
+  font-size: 0.82rem;
+}
+
+.g-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.g-header-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.g-body {
+  max-height: calc(36px * 4);
+  overflow-y: auto;
+}
+
+.g-label {
+  width: 140px;
+  min-width: 140px;
+  padding: 6px 12px;
+  color: #444;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+}
+
+.g-timeline {
+  position: relative;
+  display: flex;
+  flex: 1;
+  overflow: visible;
+}
+
+.g-cell {
+  border-right: 1px solid #f0f0f0;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.g-header-cell {
+  font-size: 0.75rem;
+  color: #999;
+  height: 28px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.g-bar {
+  position: absolute;
+  top: 6px;
+  height: 24px;
+  border-radius: 4px;
+  background: #6c63ff;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.g-bar.completed {
+  background: #27ae60;
+}
+
+.g-bar.overdue {
+  background: #e74c3c;
+}
+
+.gantt-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.gantt-view-btn {
+  padding: 4px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.gantt-view-btn.active {
+  border-color: #6c63ff;
+  color: #6c63ff;
+  font-weight: 600;
+}
+
+.gantt-empty {
+  text-align: center;
+  color: #bbb;
+  padding: 24px 0;
+  font-size: 0.9rem;
+}
+
+/* frappe-gantt カスタムカラー */
+.gantt .bar-wrapper .bar {
+  fill: #6c63ff;
+}
+
+.gantt .bar-wrapper.gantt-completed .bar {
+  fill: #27ae60;
+}
+
+.gantt .bar-wrapper.gantt-overdue .bar {
+  fill: #e74c3c;
 }

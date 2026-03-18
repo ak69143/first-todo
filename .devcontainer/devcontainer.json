@@ -13,5 +13,6 @@
       }
     }
   },
-  "forwardPorts": [5500]
+  "forwardPorts": [5500],
+  "postCreateCommand": "npm install && mkdir -p vendor && cp node_modules/frappe-gantt/dist/frappe-gantt.js vendor/ && cp node_modules/frappe-gantt/dist/frappe-gantt.css vendor/"
 }
